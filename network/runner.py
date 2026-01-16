@@ -1,5 +1,6 @@
 
 import os
+from random import random
 import time
 
 from engine.config import ENABLED_DETECTORS
@@ -9,12 +10,27 @@ from utils.packet_source import start_sniffing
 
 def generate_test_traffic():
     
-    TARGET_IP = "10.0.0.2"
+    HOSTS = {
+        "h1": "10.0.0.1",
+        "h2": "10.0.0.2",
+        "h3": "10.0.0.3",
+        "h4": "10.0.0.4",
+    }
 
     while True:
-        os.system(f"ping -c 1 {TARGET_IP} > /dev/null 2>&1")
-        os.system(f"arping -c 1 {TARGET_IP} > /dev/null 2>&1")
-        time.sleep(2)
+        sender, receiver = random.sample(list(HOSTS.items()), 2)
+
+        sender_host, sender_ip = sender
+        receiver_host, receiver_ip = receiver
+
+        print(f"[TRAFFIC] {sender_host} ({sender_ip}) → {receiver_host} ({receiver_ip})")
+
+        os.system(
+            f"mnexec -a $(pgrep -f 'mininet:{sender_host}') "
+            f"arping -c 1 {receiver_ip} > /dev/null 2>&1"
+        )
+
+        time.sleep(random.uniform(1, 3))
 
 
 
