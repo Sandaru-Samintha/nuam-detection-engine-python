@@ -25,6 +25,7 @@ def start_detection_engine():
         packet_type = engine.observe_type(pkt)
         
         if packet_type not in ENABLED_DETECTORS:
+            print("Unsupported packet type:", packet_type)
             return
         
         observed_details = engine.extract_device_info(pkt, packet_type)
