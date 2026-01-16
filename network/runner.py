@@ -23,6 +23,10 @@ def start_detection_engine():
 
     def on_packet(pkt):
         packet_type = engine.observe_type(pkt)
+        
+        if packet_type not in ENABLED_DETECTORS:
+            return
+        
         observed_details = engine.extract_device_info(pkt, packet_type)
         is_new = engine.is_new_device_joined(observed_details)
 
