@@ -1,4 +1,5 @@
 import datetime
+import subprocess
 from scapy.all import ARP, IP
 
 class DetectionEngine:
@@ -29,13 +30,12 @@ class DetectionEngine:
     
     
     def extract_device_info(self , packet , observed_type):
-        
         details = self.detectors[observed_type].extract_details(packet)
         return details
     
     
-    def is_new_device_joined(self , mac_address):
-        
+    def is_new_device_joined(self , details):
+        mac_address = details["src_mac"]
         if mac_address not in self.known_devices:
             self.known_devices[mac_address] = True
             return True
@@ -63,4 +63,13 @@ class DetectionEngine:
         }
            
         return event
+    
+    def get_known_devices(self):
+        return list(self.known_devices.keys())
+    
+    # def ping_device(self , mac_address):
+    #     if mac_address in self.known_devices:
+    #         subprocess.run(["ping" , "-c" , "1" , self.known_devices[mac_address]])
+    #         return True
+    #     return False
     

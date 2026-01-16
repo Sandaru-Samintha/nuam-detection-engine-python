@@ -21,7 +21,7 @@ class Logger:
     def log_event(self, event):
         print(f"[{event['detected_timestamp']}] Detector: {event['detector']}, Details: {event['details']}")
         
-    def log_writer(self , event):
+    def send_event(self , event):
         if self.socket:
             try:
                 message = f"[{event['detected_timestamp']}] Detector: {event['detector']}, Details: {event['details']}\n"
