@@ -21,7 +21,7 @@ def generate_test_traffic():
         sender_host, sender_ip = sender
         receiver_host, receiver_ip = receiver
 
-        print(f"[TRAFFIC] {sender_host} ({sender_ip}) → {receiver_host} ({receiver_ip})")
+        print(f"[TRAFFIC] {sender_host} ({sender_ip}) {receiver_host} ({receiver_ip})")
 
         os.system(
             f"mnexec -a $(pgrep -f 'mininet:{sender_host}') "
