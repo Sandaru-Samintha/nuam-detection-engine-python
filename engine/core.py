@@ -31,7 +31,7 @@ class DetectionEngine:
     
     def extract_device_info(self , packet , observed_type):
         details = self.detectors[observed_type].extract_details(packet)
-        return details
+        return details , observed_type
     
     
     def is_new_device_joined(self , details):
@@ -53,23 +53,6 @@ class DetectionEngine:
             return True
         return False
     
-    
-    def generate_event(self, details , detector_name):
-        
-        event = {
-            "detector": detector_name,
-            "details": details,
-            "detected_timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
-        }
-           
-        return event
-    
     def get_known_devices(self):
         return list(self.known_devices.keys())
-    
-    # def ping_device(self , mac_address):
-    #     if mac_address in self.known_devices:
-    #         subprocess.run(["ping" , "-c" , "1" , self.known_devices[mac_address]])
-    #         return True
-    #     return False
     

@@ -4,7 +4,9 @@ import random
 import time
 from engine.config import ENABLED_DETECTORS
 from engine.core import DetectionEngine
+from engine.config import BACKEND_BASE_URL , BACKEND_PORT
 from utils.packet_source import start_sniffing
+from logger.logger import Logger
 
 
 def generate_test_traffic(net):
@@ -20,6 +22,8 @@ def generate_test_traffic(net):
 
 def start_detection_engine():
     engine = DetectionEngine(ENABLED_DETECTORS)
+    logger = Logger(BACKEND_BASE_URL, BACKEND_PORT)
+    logger.init_socket_connection()
 
     def on_packet(pkt):
         packet_type = engine.observe_type(pkt)
@@ -29,12 +33,5 @@ def start_detection_engine():
         
         observed_details = engine.extract_device_info(pkt, packet_type)
         is_new = engine.is_new_device_joined(observed_details)
-
-        if is_new:
-            event = engine.generate_event(
-                observed_details,
-                detector_name=f"{packet_type} Detector"
-            )
-            print("New device joined:", event , flush=True)
-
+        
     start_sniffing(on_packet)
