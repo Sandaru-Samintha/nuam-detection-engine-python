@@ -6,6 +6,7 @@ ENABLED_DETECTORS = {
     "IP": IPDetector(),
 }
 
-BACKEND_BASE_URL = "ws://192.168.56.1"
-BACKEND_PORT = 8000
+# MUST be reachable from VM
+BACKEND_WS_URL = "ws://192.168.56.1:8000/ws/device"
+
 LOG_PATH = "/media/sf_shared/logs.txt"

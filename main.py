@@ -24,18 +24,17 @@ if __name__ == "__main__":
     hIDS = net.get('hIDS')
     print("*** Starting detection engine on hIDS")
     
-    hIDS_proc = hIDS.popen(
-        "sudo -E python3 /media/sf_shared/start_detection.py",
+    det_engine_proc = subprocess.Popen(
+        ["sudo", "-E", "python3", "/media/sf_shared/nuam-detection-engine-python/start_detection.py"],
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        shell=True
+        stderr=subprocess.PIPE
     )
     
     while True:
-        line = hIDS_proc.stdout.readline()
+        line = det_engine_proc.stdout.readline()
         if line:
-            print("[hIDS]", line.decode().strip())
-        elif hIDS_proc.poll() is not None:
+            print("[DetectionEngine]", line.decode().strip())
+        elif det_engine_proc.poll() is not None:
             print("Detection engine stopped!")
             break
                 

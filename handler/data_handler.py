@@ -123,13 +123,13 @@ class DataHandler:
             self.known_devices[mac_address]['last_seen'] = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
             self.known_devices[mac_address]['online'] = True
             self.known_devices[mac_address]['status'] = 'active'
-            # self.generate_event(parsed_details, "DEVICE_ONLINE")
+            self.generate_event(parsed_details, "DEVICE_ONLINE")
             
         
         if mac_address not in self.known_devices:
             parsed_details = self.parse_details(details)
             self.add_known_device(mac_address, parsed_details)
-            # self.generate_event(parsed_details, "DEVICE_JOINED")
+            self.generate_event(parsed_details, "DEVICE_JOINED")
             
     def handle_device_left_event(self, mac_address):
         return self.remove_from_known_devices(mac_address)
@@ -169,12 +169,12 @@ class DataHandler:
                     details['online'] = False
                     self.metric_data['active_devices'] -= 1
                     self.handle_device_left_event(mac)
-                    # self.generate_event(details, "DEVICE_LEFT")
+                    self.generate_event(details, "DEVICE_LEFT")
                     
                 elif elapsed > self.idle_seconds:
                     details['status'] = 'idle'
                     self.metric_data['active_devices'] -= 1
-                    # self.generate_event(details, "DEVICE_IDLE")
+                    self.generate_event(details, "DEVICE_IDLE")
                     
             print(f"[PERIODIC CHECK] Device: {mac} | Last Seen: {last_seen_str} | Elapsed: {elapsed} seconds", flush=True)
         print(f"[PERIODIC CHECK] Known devices after check: {list(self.known_devices.keys())}", flush=True)

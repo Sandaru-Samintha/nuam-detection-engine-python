@@ -2,7 +2,7 @@ import random
 import time
 from engine.config import ENABLED_DETECTORS
 from engine.core import DetectionEngine
-from engine.config import BACKEND_BASE_URL , BACKEND_PORT
+from engine.config import BACKEND_WS_URL
 from utils.packet_source import start_sniffing
 from logger.logger import Logger
 from handler.event_handler import EventTypeHandler
@@ -21,7 +21,7 @@ def generate_test_traffic(net):
 
 def start_detection_engine():
     engine = DetectionEngine(ENABLED_DETECTORS)
-    logger = Logger(BACKEND_BASE_URL, BACKEND_PORT)
+    logger = Logger(BACKEND_WS_URL)
     logger.init_socket_connection()
     event_type_handler = EventTypeHandler()
     data_handler = DataHandler(logger , event_type_handler)
