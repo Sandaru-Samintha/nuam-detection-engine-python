@@ -129,7 +129,7 @@ WebSocket  logs.txt       <-- primary stream to backend / offline fallback
 #### Windows
 
 ```powershell
-git clone <repository_url>
+git clone https://github.com/NaveenDanj/nuam-detection-engine-python
 cd IDS-engine
 python -m venv venv
 .\venv\Scripts\Activate.ps1
@@ -139,7 +139,7 @@ pip install -r requirements.txt
 #### Linux / macOS
 
 ```bash
-git clone <repository_url>
+git clone https://github.com/NaveenDanj/nuam-detection-engine-python
 cd IDS-engine
 python3 -m venv venv
 source venv/bin/activate
