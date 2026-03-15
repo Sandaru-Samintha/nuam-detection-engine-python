@@ -5,7 +5,7 @@ import threading
 import time
 
 class Logger:
-    def __init__(self, backend_ws_url, log_path="/media/sf_shared/logs.txt"):
+    def __init__(self, backend_ws_url, log_path="./logs.txt"):
         self.backend_ws_url = backend_ws_url
         self.log_path = log_path
         self.ws_app = None

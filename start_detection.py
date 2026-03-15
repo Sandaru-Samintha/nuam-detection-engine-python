@@ -30,6 +30,7 @@ def start_detection_engine():
             print(f"[Packet] Detected {packet_type} packet")
             
             observed_details, observed_type = engine.extract_device_info(pkt, packet_type)
+            print("Packet Data : " , observed_details['src_ip'])
             data_handler.handle_observed_data(pkt, observed_details, observed_type)
 
     start_sniffing(on_packet)

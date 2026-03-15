@@ -39,8 +39,8 @@ class DataHandler:
         self.sequence_number = 0
         self._stop_event = Event()
         self._check_thread = None
-        self.timeout_seconds = 300
-        self.idle_seconds = 180
+        self.timeout_seconds = 60
+        self.idle_seconds = 30
         self.mectric_analyzer = MetricAnalyzer(event_type_handler)
         self.device_connectivity_analyzer = ConnectivityJoinAnalyzer(event_type_handler , "10.0.0.0/8")
         self.periodic_checker = PeriodicCheckerHandler()
@@ -68,7 +68,8 @@ class DataHandler:
 
     def remove_from_known_devices(self, mac_address):
         if mac_address in self.known_devices:
-            del self.known_devices[mac_address]
+            self.known_devices[mac_address]['online'] = False
+            self.known_devices[mac_address]['status'] = 'offline'
             return True
         return False
 
@@ -133,12 +134,10 @@ class DataHandler:
                 
                 if elapsed > self.timeout_seconds and details['online'] == True :
                     details['online'] = False
-                    details['status'] = 'left'  
-                    self.metric_data['active_devices'] -= 1
+                    details['status'] = 'offline'  
                     self.handle_device_left_event(mac)
                     self.generate_event(details, "DEVICE_LEFT")
                     
-                elif elapsed > self.idle_seconds and details['status'] != 'idle':
+                elif elapsed > self.idle_seconds and details['status'] != 'idle' and details['online'] == True:
                     details['status'] = 'idle'
-                    self.metric_data['active_devices'] -= 1
                     self.generate_event(details, "DEVICE_IDLE")

@@ -8,7 +8,7 @@ from device_fingerprint_analyzer.oui_loader import OUILoader
 
 class ConnectivityJoinAnalyzer(BaseAnalyzer):
     
-    def __init__(self, event_type_handler: EventTypeHandler, local_network="192.168.0.0/16"):
+    def __init__(self, event_type_handler: EventTypeHandler, local_network="192.168.56.0/24"):
         super().__init__(event_type_handler)
         self.oui_loader = OUILoader(csv_path="./data/oui.csv", cache_file="./data/oui_cache.pkl")
         self.oui_loader.load()
@@ -16,12 +16,12 @@ class ConnectivityJoinAnalyzer(BaseAnalyzer):
         
         self.filter_hosts_ips = {
             "0.0.0.0",
-            "255.255.255.255"
+            "255.255.255.255",
         }
         try:
             self.local_network = ipaddress.ip_network(local_network, strict=False)
         except:
-            self.local_network = ipaddress.ip_network("192.168.0.0/16", strict=False)
+            self.local_network = ipaddress.ip_network("192.168.56.0/24", strict=False)
 
     
     def analyze(self, pkt, details, known_devices , metric_data , generate_event):
@@ -68,7 +68,7 @@ class ConnectivityJoinAnalyzer(BaseAnalyzer):
         
         try:
             ip_obj = ipaddress.ip_address(ip_address)
-            
+                        
             # Filter localhost addresses (127.0.0.0/8)
             if ip_obj.is_loopback:
                 return True
